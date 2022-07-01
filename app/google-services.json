@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "656206252476",
+    "firebase_url": "https://videoteca-gv-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "videoteca-gv",
     "storage_bucket": "videoteca-gv.appspot.com"
   },
@@ -10,6 +11,35 @@
         "mobilesdk_app_id": "1:656206252476:android:d3659daf363c7d2bb243b9",
         "android_client_info": {
           "package_name": "com.gv"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "656206252476-qcho3sko76mplcoddf2pj1hpuob5veek.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJjitd8EwNf-mOhN-eHrIekWOVNWNyb6s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "656206252476-qcho3sko76mplcoddf2pj1hpuob5veek.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:656206252476:android:3c21c1d00bcacd1bb243b9",
+        "android_client_info": {
+          "package_name": "com.gv.videoteca"
         }
       },
       "oauth_client": [
