@@ -2,7 +2,6 @@ package com.gv.videoteca
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -17,7 +16,7 @@ class RegisterActivity : AppCompatActivity() {
 
         var email = findViewById(R.id.email) as EditText
         var password = findViewById(R.id.password) as EditText
-        var signup = findViewById(R.id.signup) as Button
+        var signup = findViewById(R.id.cercaFilm) as Button
 
 
 
