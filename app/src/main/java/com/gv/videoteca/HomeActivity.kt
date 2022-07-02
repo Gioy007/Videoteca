@@ -14,6 +14,7 @@ class HomeActivity : AppCompatActivity() {
         var cerca = findViewById(R.id.cercaFilm) as Button
         var novita = findViewById(R.id.novita) as Button
         var prestiti = findViewById(R.id.prestiti) as Button
+        var admin = findViewById(R.id.admin) as Button
 
         cerca.setOnClickListener {
             startActivity(Intent(this,cercaFilmActivity::class.java))
@@ -21,12 +22,17 @@ class HomeActivity : AppCompatActivity() {
         }
 
         novita.setOnClickListener {
-            startActivity(Intent(this,novita::class.java))
+            startActivity(Intent(this,novitaActivity::class.java))
             finish()
         }
 
         prestiti.setOnClickListener {
-            startActivity(Intent(this,prestiti::class.java))
+            startActivity(Intent(this,prestitiActivity::class.java))
+            finish()
+        }
+
+        admin.setOnClickListener {
+            startActivity(Intent(this,adminActivity::class.java))
             finish()
         }
 
