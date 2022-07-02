@@ -48,6 +48,25 @@
         android:textColorHighlight="@color/white"
         android:textColorHint="@color/white" />
 
+    <Spinner
+        android:id="@+id/genere"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/shapeemail"
+        android:padding="15dp" />
+
+    <Spinner
+        android:id="@+id/anno"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:drawablePadding="10dp"
+        android:padding="15dp"
+        android:background="@drawable/shapeemail"
+        />
+
+
     <Button
         android:id="@+id/search"
         android:layout_width="match_parent"
