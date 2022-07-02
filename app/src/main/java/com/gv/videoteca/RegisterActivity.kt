@@ -1,5 +1,6 @@
 package com.gv.videoteca
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -40,6 +41,8 @@ class RegisterActivity : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(tEmail, tPsw).addOnCompleteListener { task->
             if(task.isSuccessful){
                 Toast.makeText(this, "Registrazione effettuata", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this,LoginActivity::class.java))
+                finish()
             }
             else{
                 Toast.makeText(this, "Registrazione fallita", Toast.LENGTH_SHORT).show()
