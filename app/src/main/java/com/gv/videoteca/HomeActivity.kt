@@ -6,10 +6,9 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
+import java.lang.Error
 
 private val sharedPrefFile = "kotlinsharedpreference"
 
@@ -43,20 +42,31 @@ class HomeActivity : AppCompatActivity() {
             val sharedPreferences: SharedPreferences = this.getSharedPreferences(sharedPrefFile,
                 Context.MODE_PRIVATE)
             val sharedEmail = sharedPreferences.getString("email","")
-            //sostituisco punto con asterisco
+            if (sharedEmail != null) {
+                val searchEmail= sharedEmail.replace(".","*")
 
-            val rootRef = FirebaseDatabase.getInstance().getReference("adminUser")
-            val valuesRef= rootRef.equalTo(sharedEmail)
-            //val val
+                val rootRef = FirebaseDatabase.getInstance().getReference("adminUser")
+                rootRef.child(searchEmail).get().addOnSuccessListener {
 
-            /*if(!sharedEmail.equals("")){
-                Toast.makeText(this, , Toast.LENGTH_SHORT).show()
-            }else{
-                //outputName.setText(sharedNameValue).toString()
-                //outputId.setText(sharedIdValue.toString())
-            }*/
+                    if(it.exists()){
+                        //val admin=  it.child("nome...").value
+                        Toast.makeText(this, "Admin verificato", Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this,adminActivity::class.java))
+                        finish()
+                    }
+                    else{
+                        Toast.makeText(this, "Non sei un utente admin, accesso negato", Toast.LENGTH_SHORT).show()
+                    }
+                }.addOnFailureListener{ exception ->
+                    Toast.makeText(this,exception.localizedMessage, Toast.LENGTH_SHORT).show()
+                }
+            }
+            else{
+                Toast.makeText(this, "Autenticati prima di proseguire", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this,LoginActivity::class.java))
+                finish()
+            }
 
-            startActivity(Intent(this,adminActivity::class.java))
         }
 
     }
