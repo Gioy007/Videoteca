@@ -29,6 +29,7 @@
             android:layout_weight="1"
             android:shadowColor="@android:color/transparent"
             android:text="Videoteca"
+            android:textColor="#595bd4"
             android:textSize="32sp" />
 
     </LinearLayout>
@@ -70,7 +71,7 @@
 
 
         <Button
-            android:id="@+id/mieiPrestiti"
+            android:id="@+id/prestiti"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
