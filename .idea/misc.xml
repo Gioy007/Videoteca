@@ -3,12 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Jack/StudioProjects/Videoteca1/app/src/main/res/layout/activity_admin.xml" value="0.2890625" />
+        <entry key="..\:/Users/Jack/StudioProjects/Videoteca1/app/src/main/res/layout/activity_cerca_film.xml" value="0.2890625" />
+        <entry key="..\:/Users/Jack/StudioProjects/Videoteca1/app/src/main/res/layout/activity_home.xml" value="0.2890625" />
+        <entry key="..\:/Users/Jack/StudioProjects/Videoteca1/app/src/main/res/layout/activity_login.xml" value="0.2890625" />
+        <entry key="..\:/Users/Jack/StudioProjects/Videoteca1/app/src/main/res/layout/activity_main.xml" value="0.19322916666666667" />
         <entry key="..\:/Users/gioy0/AndroidStudioProjects/Videoteca2/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
         <entry key="..\:/Users/gioy0/AndroidStudioProjects/Videoteca2/app/src/main/res/drawable/ic_baseline_lock_open_24.xml" value="0.197" />
         <entry key="..\:/Users/gioy0/AndroidStudioProjects/Videoteca2/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.1" />
         <entry key="..\:/Users/gioy0/AndroidStudioProjects/Videoteca2/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1535" />
-        <entry key="..\:/Users/gioy0/AndroidStudioProjects/Videoteca2/app/src/main/res/drawable/ic_lock.xml" value="0.5" />
-        <entry key="..\:/Users/gioy0/AndroidStudioProjects/Videoteca2/app/src/main/res/drawable/ic_movie.xml" value="0.5" />
         <entry key="..\:/Users/gioy0/AndroidStudioProjects/Videoteca2/app/src/main/res/drawable/shapeemail.xml" value="0.1" />
         <entry key="..\:/Users/gioy0/AndroidStudioProjects/Videoteca2/app/src/main/res/drawable/shapelogin.xml" value="0.1" />
         <entry key="..\:/Users/gioy0/AndroidStudioProjects/Videoteca2/app/src/main/res/drawable/shapesignup.xml" value="0.1" />
@@ -17,7 +20,7 @@
         <entry key="..\:/Users/gioy0/AndroidStudioProjects/Videoteca2/app/src/main/res/layout/activity_admin.xml" value="0.21041666666666667" />
         <entry key="..\:/Users/gioy0/AndroidStudioProjects/Videoteca2/app/src/main/res/layout/activity_cerca_film.xml" value="0.5177083333333333" />
         <entry key="..\:/Users/gioy0/AndroidStudioProjects/Videoteca2/app/src/main/res/layout/activity_home.xml" value="0.4125905797101449" />
-        <entry key="..\:/Users/gioy0/AndroidStudioProjects/Videoteca2/app/src/main/res/layout/activity_login.xml" value="0.4320652173913043" />
+        <entry key="..\:/Users/gioy0/AndroidStudioProjects/Videoteca2/app/src/main/res/layout/activity_login.xml" value="0.5317708333333333" />
         <entry key="..\:/Users/gioy0/AndroidStudioProjects/Videoteca2/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Users/gioy0/AndroidStudioProjects/Videoteca2/app/src/main/res/layout/activity_novita.xml" value="0.5317708333333333" />
         <entry key="..\:/Users/gioy0/AndroidStudioProjects/Videoteca2/app/src/main/res/layout/activity_prestiti.xml" value="0.5317708333333333" />
@@ -27,7 +30,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
