@@ -1,10 +1,17 @@
 package com.gv.videoteca
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+
+private val sharedPrefFile = "kotlinsharedpreference"
 
 class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,8 +39,24 @@ class HomeActivity : AppCompatActivity() {
         }
 
         admin.setOnClickListener {
+
+            val sharedPreferences: SharedPreferences = this.getSharedPreferences(sharedPrefFile,
+                Context.MODE_PRIVATE)
+            val sharedEmail = sharedPreferences.getString("email","")
+            //sostituisco punto con asterisco
+
+            val rootRef = FirebaseDatabase.getInstance().getReference("adminUser")
+            val valuesRef= rootRef.equalTo(sharedEmail)
+            //val val
+
+            /*if(!sharedEmail.equals("")){
+                Toast.makeText(this, , Toast.LENGTH_SHORT).show()
+            }else{
+                //outputName.setText(sharedNameValue).toString()
+                //outputId.setText(sharedIdValue.toString())
+            }*/
+
             startActivity(Intent(this,adminActivity::class.java))
-            finish()
         }
 
     }
