@@ -14,6 +14,18 @@
         android:theme="@style/Theme.Videoteca"
         tools:targetApi="31">
         <activity
+            android:name=".prestitiActivity"
+            android:exported="false" />
+        <activity
+            android:name=".novitaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".cercaFilmActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false" />
+        <activity
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity

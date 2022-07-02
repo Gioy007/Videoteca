@@ -19,7 +19,7 @@ class LoginActivity : AppCompatActivity() {
         var email = findViewById(R.id.email) as EditText
         var password = findViewById(R.id.password) as EditText
         var login = findViewById(R.id.login) as Button
-        var signup = findViewById(R.id.signup) as Button
+        var signup = findViewById(R.id.cercaFilm) as Button
 
         login.setOnClickListener{
             val t_email = email.text
@@ -29,6 +29,7 @@ class LoginActivity : AppCompatActivity() {
 
         signup.setOnClickListener{
             startActivity(Intent(this,RegisterActivity::class.java))
+            finish()
         }
 
 
@@ -45,6 +46,8 @@ class LoginActivity : AppCompatActivity() {
             auth.signInWithEmailAndPassword(email, psw).addOnCompleteListener{ task ->
                 if(task.isSuccessful){
                     Toast.makeText(this, "Login completato", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this,HomeActivity::class.java))
+                    finish()
                 }
             }.addOnFailureListener { exception ->
                 Toast.makeText(this,exception.localizedMessage, Toast.LENGTH_LONG).show()
