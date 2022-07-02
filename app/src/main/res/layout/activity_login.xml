@@ -25,6 +25,7 @@
         android:drawablePadding="10dp"
         android:hint="Email"
         android:padding="15dp"
+        android:text="gg@gmail.com"
         android:textColor="@color/white"
         android:textColorHighlight="@color/white"
         android:textColorHint="@color/white" />
@@ -39,6 +40,7 @@
         android:drawablePadding="10dp"
         android:hint="Password"
         android:padding="15dp"
+        android:text="123456"
         android:textColor="@color/white"
         android:textColorHighlight="@color/white"
         android:textColorHint="@color/white" />
