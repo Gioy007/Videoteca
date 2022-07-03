@@ -7,12 +7,12 @@ import android.view.View
 import android.widget.*
 
 class cercaFilmActivity : AppCompatActivity() {
-    var generi = arrayOf("Genre", "Animazione", "Avventura",
+    var generi = arrayOf("Genere", "Animazione", "Avventura",
         "Commedia", "Drammatico", "Fantascienza", "Fantasy",
         "Giallo", "Horror", "Musical", "Storico", "Western")
     var selectedGenre = ""
 
-    var anni = arrayOf("Year")
+    var anni = arrayOf("Anno")
     var selectedYear = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,20 +59,20 @@ class cercaFilmActivity : AppCompatActivity() {
 
             if(!t_movie.equals("")){
                 //Todo : cercare film nel db e visualizzare i risultati
-                if(selectedYear.equals("Year") and selectedGenre.equals("Genre")){
+                if(selectedYear.equals("Anno") and selectedGenre.equals("Genere")){
                     //ricerca solo per nome
-                    Toast.makeText(this, "anno e genere in def", Toast.LENGTH_SHORT).show()
+
                     //startActivity(Intent(this, ResultActivity::class.java))
-                }else if(selectedGenre.equals("Genre")){
+                }else if(selectedGenre.equals("Genere")){
                     //ricerca per nome e anno
 
-                    Toast.makeText(this, "genere in def", Toast.LENGTH_SHORT).show()
+
                     //startActivity(Intent(this, ResultActivity::class.java))
-                }else if(selectedYear.equals("Year")){
+                }else if(selectedYear.equals("Anno")){
                     //ricerca per nome e genere
 
 
-                    Toast.makeText(this, "anno in def", Toast.LENGTH_SHORT).show()
+
                     //startActivity(Intent(this, ResultActivity::class.java))
                 }else{
                     //ricerca per nome, genere e anno
