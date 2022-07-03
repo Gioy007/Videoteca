@@ -7,23 +7,30 @@ import android.view.View
 import android.widget.*
 
 class cercaFilmActivity : AppCompatActivity() {
-    var generi = arrayOf("Genere", "Animazione", "Avventura",
+    var generi = arrayOf("Genre", "Animazione", "Avventura",
+
         "Commedia", "Drammatico", "Fantascienza", "Fantasy",
         "Giallo", "Horror", "Musical", "Storico", "Western")
     var selectedGenre = ""
 
-    var anni = arrayOf("Anno")
+
+    var anni = arrayOf("Year")
+
     var selectedYear = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cerca_film)
+
+        var search = findViewById(R.id.search) as Button
+        var movie = findViewById(R.id.movie) as EditText
+
         val genreSpinner = findViewById<Spinner>(R.id.genere) as Spinner
         val arrayAdapterGenre = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, generi)
         genreSpinner.adapter = arrayAdapterGenre
         genreSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, pos: Int, p3: Long) {
-                Toast.makeText(applicationContext, "Selezionato " + generi[pos], Toast.LENGTH_LONG).show()
+                //Toast.makeText(applicationContext, "Selezionato " + generi[pos], Toast.LENGTH_LONG).show() troppi toast
                 selectedGenre = generi[pos]
             }
 
@@ -42,7 +49,7 @@ class cercaFilmActivity : AppCompatActivity() {
         yearSpinner.adapter = arrayAdapterYear
         yearSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, pos: Int, p3: Long) {
-                Toast.makeText(applicationContext, "Selezionato " + anni[pos], Toast.LENGTH_LONG).show()
+                //Toast.makeText(applicationContext, "Selezionato " + anni[pos], Toast.LENGTH_LONG).show() troppi toast
                 selectedYear = anni[pos]
             }
 
@@ -51,27 +58,28 @@ class cercaFilmActivity : AppCompatActivity() {
             }
         }
 
-        var search = findViewById(R.id.search) as Button
-        var movie = findViewById(R.id.movie) as EditText
+
 
         search.setOnClickListener {
             var t_movie= movie.text.toString()
 
             if(!t_movie.equals("")){
                 //Todo : cercare film nel db e visualizzare i risultati
-                if(selectedYear.equals("Anno") and selectedGenre.equals("Genere")){
-                    //ricerca solo per nome
 
+                if(selectedYear.equals("Year") and selectedGenre.equals("Genre")){
+                    //ricerca solo per nome
+                    Toast.makeText(this, "anno e genere in def", Toast.LENGTH_SHORT).show()
                     //startActivity(Intent(this, ResultActivity::class.java))
-                }else if(selectedGenre.equals("Genere")){
+                }else if(selectedGenre.equals("Genre")){
                     //ricerca per nome e anno
 
-
+                    Toast.makeText(this, "genere in def", Toast.LENGTH_SHORT).show()
                     //startActivity(Intent(this, ResultActivity::class.java))
-                }else if(selectedYear.equals("Anno")){
+                }else if(selectedYear.equals("Year")){
                     //ricerca per nome e genere
 
 
+                    Toast.makeText(this, "anno in def", Toast.LENGTH_SHORT).show()
 
                     //startActivity(Intent(this, ResultActivity::class.java))
                 }else{
