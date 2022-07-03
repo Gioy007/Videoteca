@@ -1,20 +1,14 @@
 package com.gv.videoteca
 
-import android.content.Context
 import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.content.SharedPreferences
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.ktx.Firebase
-
 
 private val auth = FirebaseAuth.getInstance()
-private val sharedPrefFile = "kotlinsharedpreference"
 
 class LoginActivity : AppCompatActivity() {
 
@@ -51,12 +45,6 @@ class LoginActivity : AppCompatActivity() {
         else{
             auth.signInWithEmailAndPassword(email, psw).addOnCompleteListener{ task ->
                 if(task.isSuccessful){
-
-                    val sharedPreferences: SharedPreferences = this.getSharedPreferences(sharedPrefFile,Context.MODE_PRIVATE)
-                    val editor:SharedPreferences.Editor =  sharedPreferences.edit()
-                    editor.putString("email",email)
-                    editor.apply()
-
                     Toast.makeText(this, "Login completato", Toast.LENGTH_SHORT).show()
                     startActivity(Intent(this,HomeActivity::class.java))
                     finish()

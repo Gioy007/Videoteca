@@ -8,16 +8,20 @@ import android.widget.*
 
 class cercaFilmActivity : AppCompatActivity() {
     var generi = arrayOf("Genre", "Animazione", "Avventura",
+
         "Commedia", "Drammatico", "Fantascienza", "Fantasy",
         "Giallo", "Horror", "Musical", "Storico", "Western")
     var selectedGenre = ""
 
+
     var anni = arrayOf("Year")
+
     var selectedYear = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cerca_film)
+
         var search = findViewById(R.id.search) as Button
         var movie = findViewById(R.id.movie) as EditText
 
@@ -61,6 +65,7 @@ class cercaFilmActivity : AppCompatActivity() {
 
             if(!t_movie.equals("")){
                 //Todo : cercare film nel db e visualizzare i risultati
+
                 if(selectedYear.equals("Year") and selectedGenre.equals("Genre")){
                     //ricerca solo per nome
                     Toast.makeText(this, "anno e genere in def", Toast.LENGTH_SHORT).show()
@@ -75,6 +80,7 @@ class cercaFilmActivity : AppCompatActivity() {
 
 
                     Toast.makeText(this, "anno in def", Toast.LENGTH_SHORT).show()
+
                     //startActivity(Intent(this, ResultActivity::class.java))
                 }else{
                     //ricerca per nome, genere e anno
