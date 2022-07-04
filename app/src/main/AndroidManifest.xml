@@ -23,12 +23,6 @@
             android:name=".adminActivity"
             android:exported="false" />
         <activity
-            android:name=".prestitiActivity"
-            android:exported="false" />
-        <activity
-            android:name=".novitaActivity"
-            android:exported="false" />
-        <activity
             android:name=".cercaFilmActivity"
             android:exported="false" />
         <activity

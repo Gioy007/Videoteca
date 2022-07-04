@@ -28,12 +28,16 @@ class HomeActivity : AppCompatActivity() {
         }
 
         novita.setOnClickListener {
-            startActivity(Intent(this,scrollSelection::class.java))
+            val intent=Intent(this,scrollSelection::class.java)
+            intent.putExtra("request", "news")
+            startActivity(intent)
             finish()
         }
 
         prestiti.setOnClickListener {
-            startActivity(Intent(this,prestitiActivity::class.java))
+            val intent=Intent(this,scrollSelection::class.java)
+            intent.putExtra("request", "loans")
+            startActivity(intent)
             finish()
         }
 

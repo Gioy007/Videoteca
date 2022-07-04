@@ -5,10 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 
 class cercaFilmActivity : AppCompatActivity() {
     var generi = arrayOf("Genre", "Animazione", "Avventura",
@@ -87,47 +84,56 @@ class cercaFilmActivity : AppCompatActivity() {
     }
 
     private fun searchFilm(tMovie: String, selectedGenre: String, selectedYear: String) {
-        //todo : finire la selection perche non funziona
+        var intent = Intent(this, scrollSelection::class.java)
 
-        var getData = object : ValueEventListener{
+
+        var dbRef:DatabaseReference= FirebaseDatabase.getInstance().getReference("film")
+
+        dbRef.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                if(snapshot.exists()){
+                    var filmsFiltered="src;"
+
+                    for (filmSnap in snapshot.children){
+                        val filmData = filmSnap.getValue(Film::class.java)
+                        var fit =true
+
+
+                        if(tMovie.equals(filmData?.name)){
+                            if(!selectedGenre.equals("Genre")){
+                                if (!selectedGenre.equals(filmData?.genre)){
+                                    fit=false
+                                }
+                            }
+                            if(!selectedYear.equals("Year")){
+                                if (!selectedYear.equals(filmData?.anno)){
+                                    fit=false
+                                }
+                            }
+
+                        }
+                        else{
+                            fit=false
+                        }
+
+                        if (fit.equals(true)){
+                            filmsFiltered+= filmData?.name+";"
+                        }
+
+                    }
+
+                    intent.putExtra("request", filmsFiltered)
+                    startActivity(intent)
+                    finish()
+
+                }
+            }
+
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
             }
 
-            override fun onDataChange(snapshot: DataSnapshot) {
-
-
-                for (i in snapshot.children){
-                    var fit =true
-
-                    var childName=i.child("name").toString()
-                    var childGenre=i.child("genre").toString()
-                    var childYear=i.child("year").toString()
-
-                    if(tMovie.equals(childName)){
-                        if(!selectedGenre.equals("Genre")){
-                            if (!selectedGenre.equals(childGenre)){
-                                fit=false
-                            }
-                        }
-                        if(!selectedYear.equals("Year")){
-                            if (!selectedYear.equals(childYear)){
-                                fit=false
-                            }
-                        }
-
-                    }
-                    else{
-                        fit=false
-                    }
-
-                    if (fit.equals(true)){
-                        val film= snapshot.getValue().toString()
-                        filmsSelected.add(film)
-                    }
-
-                }
-            }
-        }
+        })
     }
 }
