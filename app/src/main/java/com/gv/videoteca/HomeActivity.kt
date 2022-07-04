@@ -28,7 +28,7 @@ class HomeActivity : AppCompatActivity() {
         }
 
         novita.setOnClickListener {
-            startActivity(Intent(this,novitaActivity::class.java))
+            startActivity(Intent(this,scrollSelection::class.java))
             finish()
         }
 
