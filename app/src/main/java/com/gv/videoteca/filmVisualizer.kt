@@ -2,7 +2,10 @@ package com.gv.videoteca
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
 
 class filmVisualizer : AppCompatActivity() {
 
@@ -10,6 +13,7 @@ class filmVisualizer : AppCompatActivity() {
     private lateinit var genre : TextView
     private lateinit var year : TextView
     private lateinit var description : TextView
+    private lateinit var reserve : Button
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,6 +23,18 @@ class filmVisualizer : AppCompatActivity() {
         initView()
 
         setValues()
+
+        reserve.setOnClickListener {
+            val user = FirebaseAuth.getInstance().currentUser
+            // todo : fare la prenota nella root loans con il current user e l'id del film
+
+            if(user!= null){
+
+            }
+            else{
+                Toast.makeText(this, "Log in before see your loans", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun initView() {
@@ -26,6 +42,7 @@ class filmVisualizer : AppCompatActivity() {
         genre = findViewById(R.id.genre)
         year = findViewById(R.id.year)
         description = findViewById(R.id.description)
+        reserve = findViewById(R.id.reserve)
     }
 
     private fun setValues() {
