@@ -5,6 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class cercaFilmActivity : AppCompatActivity() {
     var generi = arrayOf("Genre", "Animazione", "Avventura",
@@ -17,6 +21,7 @@ class cercaFilmActivity : AppCompatActivity() {
     var anni = arrayOf("Year")
 
     var selectedYear = ""
+    var filmsSelected = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +35,6 @@ class cercaFilmActivity : AppCompatActivity() {
         genreSpinner.adapter = arrayAdapterGenre
         genreSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, pos: Int, p3: Long) {
-                //Toast.makeText(applicationContext, "Selezionato " + generi[pos], Toast.LENGTH_LONG).show() troppi toast
                 selectedGenre = generi[pos]
             }
 
@@ -49,7 +53,6 @@ class cercaFilmActivity : AppCompatActivity() {
         yearSpinner.adapter = arrayAdapterYear
         yearSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, pos: Int, p3: Long) {
-                //Toast.makeText(applicationContext, "Selezionato " + anni[pos], Toast.LENGTH_LONG).show() troppi toast
                 selectedYear = anni[pos]
             }
 
@@ -63,34 +66,67 @@ class cercaFilmActivity : AppCompatActivity() {
         search.setOnClickListener {
             var t_movie= movie.text.toString()
 
+            searchFilm(t_movie, selectedGenre, selectedYear)
             if(!t_movie.equals("")){
-                //Todo : cercare film nel db e visualizzare i risultati
+                searchFilm(t_movie,selectedGenre, selectedYear)
 
-                if(selectedYear.equals("Year") and selectedGenre.equals("Genre")){
-                    //ricerca solo per nome
-                    Toast.makeText(this, "anno e genere in def", Toast.LENGTH_SHORT).show()
-                    //startActivity(Intent(this, ResultActivity::class.java))
-                }else if(selectedGenre.equals("Genre")){
-                    //ricerca per nome e anno
-
-                    Toast.makeText(this, "genere in def", Toast.LENGTH_SHORT).show()
-                    //startActivity(Intent(this, ResultActivity::class.java))
-                }else if(selectedYear.equals("Year")){
-                    //ricerca per nome e genere
-
-
-                    Toast.makeText(this, "anno in def", Toast.LENGTH_SHORT).show()
-
-                    //startActivity(Intent(this, ResultActivity::class.java))
-                }else{
-                    //ricerca per nome, genere e anno
-
-
-                    //startActivity(Intent(this, ResultActivity::class.java))
+                if(filmsSelected.isNotEmpty()){
+                    var intent= Intent(this,scrollSelection::class.java)
+                    intent.putExtra("toDisplay",filmsSelected.toString())
+                    startActivity(intent)
+                    finish()
+                }
+                else{
+                    Toast.makeText(this, "Nessun risultato", Toast.LENGTH_SHORT).show()
                 }
             }
             else{
                 Toast.makeText(this, "Inserisci il film da cercare", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun searchFilm(tMovie: String, selectedGenre: String, selectedYear: String) {
+        //todo : finire la selection perche non funziona
+
+        var getData = object : ValueEventListener{
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+
+                for (i in snapshot.children){
+                    var fit =true
+
+                    var childName=i.child("name").toString()
+                    var childGenre=i.child("genre").toString()
+                    var childYear=i.child("year").toString()
+
+                    if(tMovie.equals(childName)){
+                        if(!selectedGenre.equals("Genre")){
+                            if (!selectedGenre.equals(childGenre)){
+                                fit=false
+                            }
+                        }
+                        if(!selectedYear.equals("Year")){
+                            if (!selectedYear.equals(childYear)){
+                                fit=false
+                            }
+                        }
+
+                    }
+                    else{
+                        fit=false
+                    }
+
+                    if (fit.equals(true)){
+                        val film= snapshot.getValue().toString()
+                        filmsSelected.add(film)
+                    }
+
+                }
             }
         }
     }
