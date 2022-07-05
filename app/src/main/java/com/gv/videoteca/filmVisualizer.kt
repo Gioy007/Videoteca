@@ -42,32 +42,34 @@ class filmVisualizer : AppCompatActivity() {
             val email = user?.email.toString().replace('.', '*')
             val film = title.text.toString()
             var alreadyExist = false
-            Log.d("string", "passo o")
+
             if(user!= null){
-                //dbRef= FirebaseDatabase.getInstance().reference.child("Loans")
-                //dbRef.addValueEventListener(object : ValueEventListener{
-                //    override fun onDataChange(snapshot: DataSnapshot) {
-                //        if(snapshot.exists()){
-                 //           for (loanSnap in snapshot.children){
-                 //               val loanData = loanSnap.getValue(Loan::class.java)
-                 //               if (loanData?.email.equals(email) and loanData?.film.equals(film)){
-                 //                   alreadyExist = true
-                 //               }
-                 //           }
-                 //           if (!alreadyExist){
+                dbRef= FirebaseDatabase.getInstance().getReference("Loans")
+
+                dbRef.addValueEventListener(object : ValueEventListener{
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if(snapshot.exists()){
+
+                            for (loanSnap in snapshot.children){
+                                val loanData = loanSnap.getValue(Loan::class.java)
+                                if (loanData?.email.equals(email) and loanData?.film.equals(film)){
+                                    alreadyExist = true
+                                }
+                            }
+                            if (!alreadyExist){
                                 val loan = Loan(email, film)
                                 FirebaseDatabase.getInstance().getReference().child("Loans").push().setValue(loan)
                                 Toast.makeText(this@filmVisualizer, "Prenotazione effettuata", Toast.LENGTH_SHORT).show()
                                 //FirebaseDatabase.getInstance().getReference().child("Loans").child(email).setValue(film) altra versione
-                //            }else{
-                 //               Toast.makeText(this@filmVisualizer, "Non puoi prenotarlo nuovamente!", Toast.LENGTH_SHORT).show()
-                 //           }
-                  //      }
-                //    }
-               //     override fun onCancelled(error: DatabaseError) {
-                //        TODO("Not yet implemented")
-                //    }
-             //   })
+                            }else{
+                                Toast.makeText(this@filmVisualizer, "Non puoi prenotarlo nuovamente!", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                    override fun onCancelled(error: DatabaseError) {
+                        TODO("Not yet implemented")
+                    }
+                })
 
             }
             else{

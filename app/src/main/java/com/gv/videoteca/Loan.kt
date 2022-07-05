@@ -8,4 +8,9 @@ class Loan {
         this.email=email
         this.film=film
     }
+
+    constructor(){
+
+    }
+
 }
