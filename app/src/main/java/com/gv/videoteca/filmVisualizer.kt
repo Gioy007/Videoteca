@@ -2,15 +2,15 @@ package com.gv.videoteca
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class filmVisualizer : AppCompatActivity() {
@@ -21,14 +21,16 @@ class filmVisualizer : AppCompatActivity() {
     private lateinit var description : TextView
     private lateinit var reserve : Button
     private lateinit var dbRef : DatabaseReference
+
     private lateinit var loanList : ArrayList<Loan>
 
     private lateinit var snap : DataSnapshot
     private var valore = "aaa"
 
     private var id = ""
-
+    val loanData = Loan("tizio","caio")
     override fun onCreate(savedInstanceState: Bundle?) {
+        println("ciao")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_film_visualizer)
 
@@ -37,16 +39,36 @@ class filmVisualizer : AppCompatActivity() {
 
         reserve.setOnClickListener {
             val user = FirebaseAuth.getInstance().currentUser
-
+            val email = user?.email.toString().replace('.', '*')
+            val film = title.text.toString()
+            var alreadyExist = false
+            Log.d("string", "passo o")
             if(user!= null){
+                //dbRef= FirebaseDatabase.getInstance().reference.child("Loans")
+                //dbRef.addValueEventListener(object : ValueEventListener{
+                //    override fun onDataChange(snapshot: DataSnapshot) {
+                //        if(snapshot.exists()){
+                 //           for (loanSnap in snapshot.children){
+                 //               val loanData = loanSnap.getValue(Loan::class.java)
+                 //               if (loanData?.email.equals(email) and loanData?.film.equals(film)){
+                 //                   alreadyExist = true
+                 //               }
+                 //           }
+                 //           if (!alreadyExist){
+                                val loan = Loan(email, film)
+                                FirebaseDatabase.getInstance().getReference().child("Loans").push().setValue(loan)
+                                Toast.makeText(this@filmVisualizer, "Prenotazione effettuata", Toast.LENGTH_SHORT).show()
+                                //FirebaseDatabase.getInstance().getReference().child("Loans").child(email).setValue(film) altra versione
+                //            }else{
+                 //               Toast.makeText(this@filmVisualizer, "Non puoi prenotarlo nuovamente!", Toast.LENGTH_SHORT).show()
+                 //           }
+                  //      }
+                //    }
+               //     override fun onCancelled(error: DatabaseError) {
+                //        TODO("Not yet implemented")
+                //    }
+             //   })
 
-                //for each in loans
-                //se flag c'è/non c'è prenotazione passa a true, prenotazione invalida
-                //else flag è ancora false{
-                val loan = Loan(user.email.toString().replace('.', '*'), title.text.toString())
-                FirebaseDatabase.getInstance().getReference().child("Loans").push().setValue(loan)
-                Toast.makeText(this, "Film prenotato correttamente", Toast.LENGTH_SHORT).show()
-                //}
             }
             else{
                 Toast.makeText(this, "Log in before see your loans", Toast.LENGTH_SHORT).show()
@@ -68,12 +90,4 @@ class filmVisualizer : AppCompatActivity() {
         year.text= intent.getStringExtra("filmYear")//!!!!!!!!!!!!!!!
         description.text= intent.getStringExtra("filmDescription")
     }
-
-    //??????
-    //private fun reserve(user : String, id : String){
-
-        //FirebaseDatabase.getInstance().getReference().child("prenotazioni").push().setValue(user, id)
-
-
-   // }
 }
