@@ -3,6 +3,7 @@ package com.gv.videoteca
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import com.google.firebase.database.*
@@ -18,7 +19,6 @@ class cercaFilmActivity : AppCompatActivity() {
     var anni = arrayOf("Year")
 
     var selectedYear = ""
-    var filmsSelected = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,78 +62,72 @@ class cercaFilmActivity : AppCompatActivity() {
 
         search.setOnClickListener {
             var t_movie= movie.text.toString()
+            var filmsFiltered="src;"
 
-            searchFilm(t_movie, selectedGenre, selectedYear)
             if(!t_movie.equals("")){
-                searchFilm(t_movie,selectedGenre, selectedYear)
+                var dbRef:DatabaseReference= FirebaseDatabase.getInstance().getReference("film")
 
-                if(filmsSelected.isNotEmpty()){
+
+                dbRef.addValueEventListener(object : ValueEventListener{
+                    override fun onDataChange(snapshot: DataSnapshot) {
+
+                        if(snapshot.exists()){
+
+                            //todo : ricerca solo le corrispondenze perfette
+                            for (filmSnap in snapshot.children){
+                                val filmData = filmSnap.getValue(Film::class.java)
+                                var fit =true
+
+
+                                if(t_movie.equals(filmData!!.name)){
+                                    if(!selectedGenre.equals("Genre")){
+                                        if (!selectedGenre.equals(filmData.genre)){
+                                            fit=false
+                                        }
+                                    }
+                                    if(!selectedYear.equals("Year")){
+                                        if (!selectedYear.equals(filmData.anno)){
+                                            fit=false
+                                        }
+                                    }
+
+                                }
+                                else{
+                                    fit=false
+                                }
+
+                                //todo: si ferma alla prima corrispondenza perche non lo rende possibile per quanto ci ho provato
+                                if (fit.equals(true)){
+                                    println("Entrato")
+                                    filmsFiltered += filmData.name+";"
+                                    var intent= Intent(this@cercaFilmActivity,scrollSelection::class.java)
+                                    intent.putExtra("request",filmsFiltered)
+                                    startActivity(intent)
+                                    finish()
+                                }
+
+                            }
+
+                        }
+                    }
+                    override fun onCancelled(error: DatabaseError) {
+                        TODO("Not yet implemented")
+                    }
+                })
+
+                /*if(!filmsFiltered.equals("src;")){
                     var intent= Intent(this,scrollSelection::class.java)
-                    intent.putExtra("toDisplay",filmsSelected.toString())
+                    intent.putExtra("request",filmsFiltered)
                     startActivity(intent)
                     finish()
                 }
                 else{
                     Toast.makeText(this, "Nessun risultato", Toast.LENGTH_SHORT).show()
-                }
+                }*/
             }
             else{
                 Toast.makeText(this, "Inserisci il film da cercare", Toast.LENGTH_SHORT).show()
             }
         }
-    }
-
-    private fun searchFilm(tMovie: String, selectedGenre: String, selectedYear: String) {
-        var intent = Intent(this, scrollSelection::class.java)
-
-
-        var dbRef:DatabaseReference= FirebaseDatabase.getInstance().getReference("film")
-
-        dbRef.addValueEventListener(object : ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-
-                if(snapshot.exists()){
-                    var filmsFiltered="src;"
-
-                    for (filmSnap in snapshot.children){
-                        val filmData = filmSnap.getValue(Film::class.java)
-                        var fit =true
-
-
-                        if(tMovie.equals(filmData?.name)){
-                            if(!selectedGenre.equals("Genre")){
-                                if (!selectedGenre.equals(filmData?.genre)){
-                                    fit=false
-                                }
-                            }
-                            if(!selectedYear.equals("Year")){
-                                if (!selectedYear.equals(filmData?.anno)){
-                                    fit=false
-                                }
-                            }
-
-                        }
-                        else{
-                            fit=false
-                        }
-
-                        if (fit.equals(true)){
-                            filmsFiltered+= filmData?.name+";"
-                        }
-
-                    }
-
-                    intent.putExtra("request", filmsFiltered)
-                    startActivity(intent)
-                    finish()
-
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-
-        })
     }
 }
