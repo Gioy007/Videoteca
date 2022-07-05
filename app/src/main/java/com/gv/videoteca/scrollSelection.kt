@@ -1,24 +1,23 @@
 package com.gv.videoteca
 
 import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.google.firebase.database.ktx.getValue
-
 
 class scrollSelection : AppCompatActivity() {
 
     private lateinit var filmRecyclerView : RecyclerView
     private lateinit var filmLoadingData : TextView
     private lateinit var filmList : ArrayList<Film>
-    private lateinit var dbRef : DatabaseReference
+    private lateinit var loansList : ArrayList<String>
+    private lateinit var dbRefL : DatabaseReference
+    private lateinit var dbRefF : DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,102 +29,251 @@ class scrollSelection : AppCompatActivity() {
         filmLoadingData = findViewById(R.id.filmLoadingData)
 
         filmList= arrayListOf<Film>()
-
-        getFilmData()
-    }
-
-    private fun getFilmData() {
-        //todo : search un po buggato, funziona solo con ggg altrimenti non funziona
-
-        filmRecyclerView.visibility= View.GONE
-        filmLoadingData.visibility= View.VISIBLE
-
+        loansList= arrayListOf<String>()
 
         var request= intent.getStringExtra("request")
-        Toast.makeText(this, "gdgfdgdf"+request, Toast.LENGTH_SHORT).show()
         val requestArray: MutableList<String> = request!!.split(";") as MutableList<String>
-        requestArray.removeAt(requestArray.size-1)
 
         when(requestArray[0]){
             "loans"->{
                 loans()
             }
-            else->{
-                dbRef= FirebaseDatabase.getInstance().getReference("film")
 
-                dbRef.addValueEventListener(object : ValueEventListener{
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        filmList.clear()
+            "src"->{
+                search(requestArray[1])
+            }
 
-                        if(snapshot.exists()){
-                            var i=1
+            "news"->{
+                news()
+            }
 
+            "all" ->{
+                allFilm()
+            }
+        }
+    }
 
-                            for (filmSnap in snapshot.children){
+    private fun allFilm() {
+        filmRecyclerView.visibility= View.GONE
+        filmLoadingData.visibility= View.VISIBLE
+
+        dbRefL= FirebaseDatabase.getInstance().getReference("film")
+
+        dbRefL.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                filmList.clear()
+
+                if(snapshot.exists()){
+                    for (filmSnap in snapshot.children){
+                        val filmData = filmSnap.getValue(Film::class.java)
+                        filmList.add(filmData!!)
+                    }
+                    var mAdapter = filmAdapter(filmList)
+                    filmRecyclerView.adapter=mAdapter
+
+                    mAdapter.setOnItemClickListener(object : filmAdapter.onItemClickListener{
+                        override fun onItemClick(position: Int) {
+                            var intent = Intent(this@scrollSelection, filmVisualizer::class.java)
+                            intent.putExtra("filmName", filmList[position].name)
+                            intent.putExtra("filmGenre", filmList[position].genre)
+                            intent.putExtra("filmYear", filmList[position].anno)
+                            intent.putExtra("filmDescription", filmList[position].description)
+                            startActivity(intent)
+                            finish()
+
+                        }
+
+                    })
+
+                    filmRecyclerView.visibility= View.VISIBLE
+                    filmLoadingData.visibility= View.GONE
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
+    }
+
+    private fun news() {
+        filmRecyclerView.visibility= View.GONE
+        filmLoadingData.visibility= View.VISIBLE
+
+        dbRefL= FirebaseDatabase.getInstance().getReference("film")
+
+        dbRefL.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                filmList.clear()
+
+                if(snapshot.exists()){
+                    var i=1
+
+                    if(snapshot.childrenCount<=6) {
+                        for (filmSnap in snapshot.children) {
+                            val filmData = filmSnap.getValue(Film::class.java)
+                            filmList.add(filmData!!)
+                        }
+                    }
+                    else{
+                        for (filmSnap in snapshot.children){
+                            if (i>= snapshot.childrenCount-6){
                                 val filmData = filmSnap.getValue(Film::class.java)
-                                val filmId = filmSnap.toString()
+                                filmList.add(filmData!!)
+                            }
+                            i++
+                        }
+                    }
 
+                    reverseArray(filmList)
+                    var mAdapter = filmAdapter(filmList)
+                    filmRecyclerView.adapter=mAdapter
 
+                    mAdapter.setOnItemClickListener(object : filmAdapter.onItemClickListener{
+                        override fun onItemClick(position: Int) {
+                            var intent = Intent(this@scrollSelection, filmVisualizer::class.java)
+                            intent.putExtra("filmName", filmList[position].name)
+                            intent.putExtra("filmGenre", filmList[position].genre)
+                            intent.putExtra("filmYear", filmList[position].anno)
+                            intent.putExtra("filmDescription", filmList[position].description)
+                            startActivity(intent)
+                            finish()
 
-                                when(requestArray[0]){
-                                    "src"->{
-                                        val requestArrayMod : MutableList<String> = requestArray
-                                        requestArrayMod.removeAt(0)
-                                        for (filmCompare in requestArrayMod){
-                                            if(filmCompare.equals(filmData!!.name)){
-                                                filmList.add(filmData!!)
-                                            }
-                                        }
-                                    }
-                                    "news"->{
-                                        if(snapshot.childrenCount<=7){
-                                            filmList.add(filmData!!)
-                                        }
-                                        else{
-                                            if(i<=7){
-                                                filmList.add(filmData!!)
-                                                i++
+                        }
+
+                    })
+
+                    filmRecyclerView.visibility= View.VISIBLE
+                    filmLoadingData.visibility= View.GONE
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
+    }
+
+    private fun loans() {
+        filmRecyclerView.visibility= View.GONE
+        filmLoadingData.visibility= View.VISIBLE
+        val user = FirebaseAuth.getInstance().currentUser
+        val email = user?.email.toString()
+        dbRefL= FirebaseDatabase.getInstance().getReference("Loans")
+        dbRefF= FirebaseDatabase.getInstance().getReference("film")
+
+        dbRefL.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                filmList.clear()
+
+                if(snapshot.exists()){
+                    for (loansSnap in snapshot.children){
+                        if (email.equals(loansSnap.child("email")))
+                        loansList.add(loansSnap.child("name").toString())
+
+                        dbRefF.addValueEventListener(object : ValueEventListener{
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                if (snapshot.exists()){
+                                    for (filmSnap in snapshot.children){
+                                        val filmData = filmSnap.getValue(Film::class.java)
+
+                                        for (loanFilm in loansList){
+                                            if (loanFilm.equals(filmData!!.name)){
+                                                filmList.add(filmData)
                                             }
                                         }
                                     }
                                 }
                             }
-                            //l'ultimo aggiunto diventa primo
-                            reverseArray(filmList)
 
-                            var mAdapter = filmAdapter(filmList)
-                            filmRecyclerView.adapter=mAdapter
+                            override fun onCancelled(error: DatabaseError) {
+                                TODO("Not yet implemented")
+                            }
 
-                            mAdapter.setOnItemClickListener(object : filmAdapter.onItemClickListener{
-                                override fun onItemClick(position: Int) {
-                                    var intent = Intent(this@scrollSelection, filmVisualizer::class.java)
-                                    intent.putExtra("filmName", filmList[position].name)
-                                    intent.putExtra("filmGenre", filmList[position].genre)
-                                    intent.putExtra("filmYear", filmList[position].anno)
-                                    intent.putExtra("filmDescription", filmList[position].description)
-                                    startActivity(intent)
-                                    finish()
+                        })
+                    }
 
-                                }
+                    var mAdapter = filmAdapter(filmList)
+                    filmRecyclerView.adapter=mAdapter
 
-                            })
-
+                    mAdapter.setOnItemClickListener(object : filmAdapter.onItemClickListener{
+                        override fun onItemClick(position: Int) {
+                            var intent = Intent(this@scrollSelection, filmVisualizer::class.java)
+                            intent.putExtra("filmName", filmList[position].name)
+                            intent.putExtra("filmGenre", filmList[position].genre)
+                            intent.putExtra("filmYear", filmList[position].anno)
+                            intent.putExtra("filmDescription", filmList[position].description)
+                            startActivity(intent)
+                            finish()
 
                         }
-                    }
 
-                    override fun onCancelled(error: DatabaseError) {
-                        TODO("Not yet implemented")
-                    }
+                    })
 
-                })
+                    filmRecyclerView.visibility= View.VISIBLE
+                    filmLoadingData.visibility= View.GONE
+
+                }
             }
-        }
 
-        filmRecyclerView.visibility= View.VISIBLE
-        filmLoadingData.visibility= View.GONE
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
 
+        })
+    }
 
+    private fun search(searchString : String) {
+        filmRecyclerView.visibility= View.GONE
+        filmLoadingData.visibility= View.VISIBLE
+
+        dbRefL= FirebaseDatabase.getInstance().getReference("film")
+        println(searchString)
+        var searchArray= searchString.split("*")
+        searchArray = searchArray.dropLast(1)
+
+        dbRefL.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                filmList.clear()
+
+                if(snapshot.exists()){
+                    for (filmSnap in snapshot.children){
+                        val filmData = filmSnap.getValue(Film::class.java)
+                        for (searchName in searchArray){
+                            if (searchName in filmData!!.name){
+                                filmList.add(filmData)
+                            }
+                        }
+                    }
+                    var mAdapter = filmAdapter(filmList)
+                    filmRecyclerView.adapter=mAdapter
+
+                    mAdapter.setOnItemClickListener(object : filmAdapter.onItemClickListener{
+                        override fun onItemClick(position: Int) {
+                            var intent = Intent(this@scrollSelection, filmVisualizer::class.java)
+                            intent.putExtra("filmName", filmList[position].name)
+                            intent.putExtra("filmGenre", filmList[position].genre)
+                            intent.putExtra("filmYear", filmList[position].anno)
+                            intent.putExtra("filmDescription", filmList[position].description)
+                            startActivity(intent)
+                            finish()
+
+                        }
+
+                    })
+
+                    filmRecyclerView.visibility= View.VISIBLE
+                    filmLoadingData.visibility= View.GONE
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
     }
 
     private fun reverseArray(filmList: ArrayList<Film>) {
@@ -136,65 +284,5 @@ class scrollSelection : AppCompatActivity() {
         for (i in filmList.indices) {
             filmList[i] = temp[i] as Film
         }
-    }
-
-    private fun loans() {
-        dbRef= FirebaseDatabase.getInstance().getReference("loans")
-
-        dbRef.addValueEventListener(object : ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                filmList.clear()
-
-                if(snapshot.exists()){
-
-                    for (filmSnap in snapshot.children){
-                        val filmData = filmSnap.getValue(Film::class.java)
-
-                        val user = FirebaseAuth.getInstance().currentUser
-                        if (user != null) {
-                            if(filmSnap.child("user").equals(user)){
-                                filmList.add(filmData!!)
-                            }
-                        } else {
-                            Toast.makeText(this@scrollSelection, "Log in before see your loans", Toast.LENGTH_SHORT).show()
-                        }
-
-
-                    }
-
-
-                    if (filmList.isNotEmpty()){
-                        var mAdapter = filmAdapter(filmList)
-                        filmRecyclerView.adapter=mAdapter
-
-                        mAdapter.setOnItemClickListener(object : filmAdapter.onItemClickListener{
-                            override fun onItemClick(position: Int) {
-                                var intent = Intent(this@scrollSelection, filmVisualizer::class.java)
-                                intent.putExtra("filmName", filmList[position].name)
-                                intent.putExtra("filmGenre", filmList[position].genre)
-                                intent.putExtra("filmYear", filmList[position].anno)
-                                intent.putExtra("filmDescription", filmList[position].description)
-                                startActivity(intent)
-                                finish()
-
-                            }
-
-                        })
-                    }
-                    else{
-                        //todo : non funziona bene perche visualizza la schermata vuota e non ritorna alla home
-
-                        Toast.makeText(this@scrollSelection, "Nessun prestito all'attivo", Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(this@scrollSelection,HomeActivity::class.java))
-                        finish()
-                    }
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-
-        })
     }
 }
