@@ -35,12 +35,16 @@ class scrollSelection : AppCompatActivity() {
     }
 
     private fun getFilmData() {
+        //todo : search un po buggato, funziona solo con ggg altrimenti non funziona
+
         filmRecyclerView.visibility= View.GONE
         filmLoadingData.visibility= View.VISIBLE
 
 
         var request= intent.getStringExtra("request")
+        Toast.makeText(this, "gdgfdgdf"+request, Toast.LENGTH_SHORT).show()
         val requestArray: MutableList<String> = request!!.split(";") as MutableList<String>
+        requestArray.removeAt(requestArray.size-1)
 
         when(requestArray[0]){
             "loans"->{
@@ -56,6 +60,7 @@ class scrollSelection : AppCompatActivity() {
                         if(snapshot.exists()){
                             var i=1
 
+
                             for (filmSnap in snapshot.children){
                                 val filmData = filmSnap.getValue(Film::class.java)
                                 val filmId = filmSnap.toString()
@@ -64,9 +69,10 @@ class scrollSelection : AppCompatActivity() {
 
                                 when(requestArray[0]){
                                     "src"->{
-                                        requestArray.removeAt(0)
-                                        for (filmCompare in requestArray){
-                                            if(filmCompare.equals(filmData)){
+                                        val requestArrayMod : MutableList<String> = requestArray
+                                        requestArrayMod.removeAt(0)
+                                        for (filmCompare in requestArrayMod){
+                                            if(filmCompare.equals(filmData!!.name)){
                                                 filmList.add(filmData!!)
                                             }
                                         }
@@ -82,7 +88,6 @@ class scrollSelection : AppCompatActivity() {
                                             }
                                         }
                                     }
-                                    else-> filmList.add(filmData!!)
                                 }
                             }
                             //l'ultimo aggiunto diventa primo
