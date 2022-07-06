@@ -33,7 +33,6 @@ class adminActivity : AppCompatActivity() {
         genreSpinner.adapter = arrayAdapterGenre
         genreSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, pos: Int, p3: Long) {
-                Toast.makeText(applicationContext, "Selezionato " + generi[pos], Toast.LENGTH_LONG).show()
                 selectedGenre = generi[pos]
             }
 
@@ -52,7 +51,6 @@ class adminActivity : AppCompatActivity() {
         yearSpinner.adapter = arrayAdapterYear
         yearSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, pos: Int, p3: Long) {
-                Toast.makeText(applicationContext, "Selezionato " + anni[pos], Toast.LENGTH_LONG).show()
                 selectedYear = anni[pos]
             }
 
