@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,6 +28,12 @@ class scrollSelection : AppCompatActivity() {
         filmRecyclerView.layoutManager= LinearLayoutManager(this)
         filmRecyclerView.setHasFixedSize(true)
         filmLoadingData = findViewById(R.id.filmLoadingData)
+        val back = findViewById(R.id.back) as Button
+
+        back.setOnClickListener {
+            startActivity(Intent(this,LoginActivity::class.java))
+            finish()
+        }
 
         filmList= arrayListOf<Film>()
         loansList= arrayListOf<String>()

@@ -1,5 +1,6 @@
 package com.gv.videoteca
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -21,6 +22,14 @@ class adminActivity : AppCompatActivity() {
 
         val genreSpinner = findViewById<Spinner>(R.id.genere) as Spinner
         val arrayAdapterGenre = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, generi)
+        val back = findViewById(R.id.back) as Button
+
+        back.setOnClickListener {
+            startActivity(Intent(this,LoginActivity::class.java))
+            finish()
+        }
+
+
         genreSpinner.adapter = arrayAdapterGenre
         genreSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, pos: Int, p3: Long) {

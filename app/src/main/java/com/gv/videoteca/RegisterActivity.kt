@@ -18,8 +18,12 @@ class RegisterActivity : AppCompatActivity() {
         var email = findViewById(R.id.email) as EditText
         var password = findViewById(R.id.password) as EditText
         var signup = findViewById(R.id.cercaFilm) as Button
+        val back = findViewById(R.id.back) as Button
 
-
+        back.setOnClickListener {
+            startActivity(Intent(this,LoginActivity::class.java))
+            finish()
+        }
 
         signup.setOnClickListener{
             val t_email = email.text

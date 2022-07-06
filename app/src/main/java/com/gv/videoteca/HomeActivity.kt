@@ -3,12 +3,13 @@ package com.gv.videoteca
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.*
-import java.lang.Error
+
 
 private val sharedPrefFile = "kotlinsharedpreference"
 
@@ -22,6 +23,12 @@ class HomeActivity : AppCompatActivity() {
         var prestiti = findViewById(R.id.prestiti) as Button
         var admin = findViewById(R.id.admin) as Button
         var cercaFilm = findViewById(R.id.visualizzaFilm) as Button
+        var back = findViewById(R.id.back) as Button
+
+        back.setOnClickListener {
+            startActivity(Intent(this,LoginActivity::class.java))
+            finish()
+        }
 
         cerca.setOnClickListener {
             startActivity(Intent(this,cercaFilmActivity::class.java))
