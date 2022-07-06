@@ -8,10 +8,12 @@ import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
 
 private val sharedPrefFile = "kotlinsharedpreference"
+private lateinit var dbRef : DatabaseReference
 
 class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,25 +62,40 @@ class HomeActivity : AppCompatActivity() {
 
             val sharedPreferences: SharedPreferences = this.getSharedPreferences(sharedPrefFile,
                 Context.MODE_PRIVATE)
-            val sharedEmail = sharedPreferences.getString("email","")
-            if (sharedEmail != null) {
-                val searchEmail= sharedEmail.replace(".","*")
+            val user = FirebaseAuth.getInstance().currentUser
+            val email = user?.email.toString()
+            if (email != null) {
+                val searchEmail= email.replace(".","*")
 
-                val rootRef = FirebaseDatabase.getInstance().getReference("adminUser")
-                rootRef.child(searchEmail).get().addOnSuccessListener {
+                dbRef= FirebaseDatabase.getInstance().reference.child("adminUser")
 
-                    if(it.exists()){
-                        //val admin=  it.child("nome...").value
-                        Toast.makeText(this, "Admin verificato", Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(this,adminActivity::class.java))
-                        finish()
+                dbRef.addValueEventListener(object : ValueEventListener{
+                    override fun onDataChange(snapshot: DataSnapshot) {
+
+                        if(snapshot.exists()){
+                            for (userSnap in snapshot.children){
+                                val user = userSnap.getValue(User::class.java)!!
+                                Log.d("searchEmail", searchEmail)
+                                Log.d("useremail", user.email)
+                                Log.d("uservalue", user.value.toString())
+
+                                if ((user.email == searchEmail) && user.value){
+                                    Toast.makeText(this@HomeActivity, "Admin verificato", Toast.LENGTH_SHORT).show()
+                                    startActivity(Intent(this@HomeActivity,adminActivity::class.java))
+                                    finish()
+                                }
+                            }
+                        }
+
+                        Toast.makeText(this@HomeActivity, "Admin non verificato", Toast.LENGTH_SHORT).show()
+
                     }
-                    else{
-                        Toast.makeText(this, "Non sei un utente admin, accesso negato", Toast.LENGTH_SHORT).show()
+
+                    override fun onCancelled(error: DatabaseError) {
+                        TODO("Not yet implemented")
                     }
-                }.addOnFailureListener{ exception ->
-                    Toast.makeText(this,exception.localizedMessage, Toast.LENGTH_SHORT).show()
-                }
+
+                })
             }
             else{
                 Toast.makeText(this, "Autenticati prima di proseguire", Toast.LENGTH_SHORT).show()
