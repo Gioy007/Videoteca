@@ -25,7 +25,7 @@ class adminActivity : AppCompatActivity() {
         val back = findViewById(R.id.back) as Button
 
         back.setOnClickListener {
-            startActivity(Intent(this,LoginActivity::class.java))
+            startActivity(Intent(this,HomeActivity::class.java))
             finish()
         }
 
