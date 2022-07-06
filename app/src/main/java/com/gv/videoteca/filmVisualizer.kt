@@ -20,6 +20,7 @@ class filmVisualizer : AppCompatActivity() {
     private lateinit var year : TextView
     private lateinit var description : TextView
     private lateinit var reserve : Button
+    private lateinit var restituisci : Button
     private lateinit var dbRef : DatabaseReference
 
     private lateinit var loanList : ArrayList<Loan>
@@ -76,6 +77,48 @@ class filmVisualizer : AppCompatActivity() {
                 Toast.makeText(this, "Log in before see your loans", Toast.LENGTH_SHORT).show()
             }
         }
+
+
+        restituisci.setOnClickListener {
+            val user = FirebaseAuth.getInstance().currentUser
+            val email = user?.email.toString().replace('.', '*')
+            val film = title.text.toString()
+            var alreadyExist = false
+            var toDelete = ""
+            var count = 1
+            if(user!= null){
+                dbRef= FirebaseDatabase.getInstance().getReference("Loans")
+                dbRef.addValueEventListener(object : ValueEventListener{
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if(snapshot.exists()){
+                            for (loanSnap in snapshot.children){
+                                val loanData = loanSnap.getValue(Loan::class.java)
+                                if (loanData?.email.equals(email) and loanData?.film.equals(film)){
+                                    alreadyExist = true
+                                }
+                                if (alreadyExist){
+                                    toDelete = loanSnap.key.toString()
+                                    dbRef.child(toDelete).removeValue()
+                                    Toast.makeText(this@filmVisualizer, "Film rimosso correttamente", Toast.LENGTH_SHORT).show()
+                                    alreadyExist = false
+                                    count--
+                                }
+                            }
+                            if (count == 1){
+                                Toast.makeText(this@filmVisualizer, "Non hai prenotato questo film", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                    override fun onCancelled(error: DatabaseError) {
+                        TODO("Not yet implemented")
+                    }
+                })
+
+            }
+            else{
+                Toast.makeText(this, "Log in before see your loans", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun initView() {
@@ -83,6 +126,7 @@ class filmVisualizer : AppCompatActivity() {
         genre = findViewById(R.id.genre)
         year = findViewById(R.id.year)
         description = findViewById(R.id.description)
+        restituisci = findViewById(R.id.restituisci)
         reserve = findViewById(R.id.reserve)
     }
 
