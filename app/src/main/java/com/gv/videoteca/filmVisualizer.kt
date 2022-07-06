@@ -1,5 +1,6 @@
 package com.gv.videoteca
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -34,6 +35,12 @@ class filmVisualizer : AppCompatActivity() {
         println("ciao")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_film_visualizer)
+        val back = findViewById(R.id.back) as Button
+
+        back.setOnClickListener {
+            startActivity(Intent(this,LoginActivity::class.java))
+            finish()
+        }
 
         initView()
         setValues()

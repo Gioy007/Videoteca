@@ -32,7 +32,14 @@
         <entry key="..\:/Users/gioy0/AndroidStudioProjects/Videoteca2/app/src/main/res/layout/film_list_item.xml" value="0.25785207700101315" />
         <entry key="..\:/Users/gioy0/AndroidStudioProjects/Videoteca2/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.197" />
         <entry key="..\:/Users/gioy0/AndroidStudioProjects/Videoteca2/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.197" />
-        <entry key="..\:/Users/gioy0/StudioProjects/Videoteca/app/src/main/res/layout/activity_home.xml" value="0.29270833333333335" />
+        <entry key="..\:/Users/gioy0/StudioProjects/Videoteca/app/src/main/res/drawable/rounded_button.xml" value="0.49" />
+        <entry key="..\:/Users/gioy0/StudioProjects/Videoteca/app/src/main/res/layout/activity_admin.xml" value="0.5317708333333333" />
+        <entry key="..\:/Users/gioy0/StudioProjects/Videoteca/app/src/main/res/layout/activity_cerca_film.xml" value="0.5317708333333333" />
+        <entry key="..\:/Users/gioy0/StudioProjects/Videoteca/app/src/main/res/layout/activity_film_visualizer.xml" value="0.29583333333333334" />
+        <entry key="..\:/Users/gioy0/StudioProjects/Videoteca/app/src/main/res/layout/activity_home.xml" value="0.36141304347826086" />
+        <entry key="..\:/Users/gioy0/StudioProjects/Videoteca/app/src/main/res/layout/activity_login.xml" value="0.29583333333333334" />
+        <entry key="..\:/Users/gioy0/StudioProjects/Videoteca/app/src/main/res/layout/activity_register.xml" value="0.5317708333333333" />
+        <entry key="..\:/Users/gioy0/StudioProjects/Videoteca/app/src/main/res/layout/activity_scroll_selection.xml" value="0.29270833333333335" />
         <entry key="..\:/Users/gioy0/StudioProjects/Videoteca/app/src/main/res/layout/film_list_item.xml" value="0.29270833333333335" />
       </map>
     </option>

@@ -45,38 +45,6 @@
         android:textColorHighlight="@color/white"
         android:textColorHint="@color/white" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Remember Me"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="0dp"
-            android:textColor="@color/white"
-            android:buttonTint="@color/white"
-            android:checked="true"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Forget Password"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="0dp"
-            android:textColor="@color/white"
-            android:drawableLeft="@drawable/ic_lock_open"
-            android:drawablePadding="6dp"
-            android:padding="4dp"/>
-
-
-    </LinearLayout>
-
     <Button
         android:id="@+id/login"
         android:layout_width="match_parent"

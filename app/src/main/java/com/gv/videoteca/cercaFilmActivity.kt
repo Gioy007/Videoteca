@@ -9,16 +9,9 @@ import android.widget.*
 import com.google.firebase.database.*
 
 class cercaFilmActivity : AppCompatActivity() {
-    var generi = arrayOf("Genre", "Animazione", "Avventura",
-
-        "Commedia", "Drammatico", "Fantascienza", "Fantasy",
-        "Giallo", "Horror", "Musical", "Storico", "Western")
+    var generi = arrayOf("Genre", "Animazione", "Avventura","Commedia", "Drammatico", "Fantascienza", "Fantasy","Giallo", "Horror", "Musical", "Storico", "Western")
     var selectedGenre = ""
-
-
     var anni = arrayOf("Year")
-
-
     var selectedYear = ""
     private lateinit var filmsFiltered : ArrayList<Film>
     private lateinit var dbRef : DatabaseReference
@@ -28,7 +21,14 @@ class cercaFilmActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cerca_film)
 
-        var search = findViewById(R.id.search) as Button
+        val search = findViewById(R.id.search) as Button
+        val back = findViewById(R.id.back) as Button
+
+        back.setOnClickListener {
+            startActivity(Intent(this,LoginActivity::class.java))
+            finish()
+        }
+
         movie = findViewById(R.id.movie)
         filmsFiltered = arrayListOf<Film>()
 

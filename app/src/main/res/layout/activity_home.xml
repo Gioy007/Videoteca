@@ -31,6 +31,19 @@
             android:text="Videoteca"
             android:textColor="#595bd4"
             android:textSize="32sp" />
+        <Button
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5sp"
+            android:layout_marginTop="5sp"
+            android:layout_marginRight="5sp"
+            android:layout_marginBottom="5sp"
+            android:background="@drawable/shapesignup"
+            android:padding="1dp"
+            android:shadowColor="@android:color/transparent"
+            android:text="Indietro"
+            android:textColor="@color/white" />
 
     </LinearLayout>
 
