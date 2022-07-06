@@ -3,6 +3,7 @@ package com.gv.videoteca
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import kotlin.math.log
 
 class scrollSelection : AppCompatActivity() {
 
@@ -30,16 +32,23 @@ class scrollSelection : AppCompatActivity() {
         filmLoadingData = findViewById(R.id.filmLoadingData)
         val back = findViewById(R.id.back) as Button
 
-        back.setOnClickListener {
-            startActivity(Intent(this,HomeActivity::class.java))
-            finish()
-        }
+
 
         filmList= arrayListOf<Film>()
         loansList= arrayListOf<String>()
 
-        var request= intent.getStringExtra("request")
+        val request= intent.getStringExtra("request")
         val requestArray: MutableList<String> = request!!.split(";") as MutableList<String>
+
+        back.setOnClickListener {
+            if(requestArray[0] == "src"){
+                startActivity(Intent(this,cercaFilmActivity::class.java))
+            }
+            else{
+                startActivity(Intent(this,HomeActivity::class.java))
+            }
+            finish()
+        }
 
         when(requestArray[0]){
             "loans"->{
@@ -83,7 +92,7 @@ class scrollSelection : AppCompatActivity() {
                             var intent = Intent(this@scrollSelection, filmVisualizer::class.java)
                             intent.putExtra("filmName", filmList[position].name)
                             intent.putExtra("filmGenre", filmList[position].genre)
-                            intent.putExtra("filmYear", filmList[position].anno)
+                            intent.putExtra("filmYear", filmList[position].anno.toString())
                             intent.putExtra("filmDescription", filmList[position].description)
                             startActivity(intent)
                             finish()
@@ -142,7 +151,7 @@ class scrollSelection : AppCompatActivity() {
                             var intent = Intent(this@scrollSelection, filmVisualizer::class.java)
                             intent.putExtra("filmName", filmList[position].name)
                             intent.putExtra("filmGenre", filmList[position].genre)
-                            intent.putExtra("filmYear", filmList[position].anno)
+                            intent.putExtra("filmYear", filmList[position].anno.toString())
                             intent.putExtra("filmDescription", filmList[position].description)
                             startActivity(intent)
                             finish()
@@ -167,7 +176,7 @@ class scrollSelection : AppCompatActivity() {
         filmRecyclerView.visibility= View.GONE
         filmLoadingData.visibility= View.VISIBLE
         val user = FirebaseAuth.getInstance().currentUser
-        val email = user?.email.toString()
+        val email = user?.email.toString().replace(".", "*")
         dbRefL= FirebaseDatabase.getInstance().getReference("Loans")
         dbRefF= FirebaseDatabase.getInstance().getReference("film")
 
@@ -176,22 +185,43 @@ class scrollSelection : AppCompatActivity() {
                 filmList.clear()
 
                 if(snapshot.exists()){
+
                     for (loansSnap in snapshot.children){
-                        if (email.equals(loansSnap.child("email")))
-                        loansList.add(loansSnap.child("name").toString())
+                        val loanEmail : String = loansSnap.child("email").value.toString()
+                        if (email == loanEmail)
+                        //loansList.add(loansSnap.child("name").toString())
 
                         dbRefF.addValueEventListener(object : ValueEventListener{
                             override fun onDataChange(snapshot: DataSnapshot) {
                                 if (snapshot.exists()){
                                     for (filmSnap in snapshot.children){
                                         val filmData = filmSnap.getValue(Film::class.java)
+                                        val loanName : String = loansSnap.child("film").value.toString()
+                                        Log.d("LoanName" , loanName)
+                                        Log.d("filmName", filmData!!.name)
 
-                                        for (loanFilm in loansList){
-                                            if (loanFilm.equals(filmData!!.name)){
-                                                filmList.add(filmData)
-                                            }
+                                        if (loanName == filmData.name){
+                                            filmList.add(filmData)
                                         }
                                     }
+
+                                    Log.d("filmList", filmList.toString())
+                                    val mAdapter = filmAdapter(filmList)
+                                    filmRecyclerView.adapter=mAdapter
+
+                                    mAdapter.setOnItemClickListener(object : filmAdapter.onItemClickListener{
+                                        override fun onItemClick(position: Int) {
+                                            val intent = Intent(this@scrollSelection, filmVisualizer::class.java)
+                                            intent.putExtra("filmName", filmList[position].name)
+                                            intent.putExtra("filmGenre", filmList[position].genre)
+                                            intent.putExtra("filmYear", filmList[position].anno.toString())
+                                            intent.putExtra("filmDescription", filmList[position].description)
+                                            startActivity(intent)
+                                            finish()
+
+                                        }
+
+                                    })
                                 }
                             }
 
@@ -201,23 +231,6 @@ class scrollSelection : AppCompatActivity() {
 
                         })
                     }
-
-                    var mAdapter = filmAdapter(filmList)
-                    filmRecyclerView.adapter=mAdapter
-
-                    mAdapter.setOnItemClickListener(object : filmAdapter.onItemClickListener{
-                        override fun onItemClick(position: Int) {
-                            var intent = Intent(this@scrollSelection, filmVisualizer::class.java)
-                            intent.putExtra("filmName", filmList[position].name)
-                            intent.putExtra("filmGenre", filmList[position].genre)
-                            intent.putExtra("filmYear", filmList[position].anno)
-                            intent.putExtra("filmDescription", filmList[position].description)
-                            startActivity(intent)
-                            finish()
-
-                        }
-
-                    })
 
                     filmRecyclerView.visibility= View.VISIBLE
                     filmLoadingData.visibility= View.GONE
@@ -262,7 +275,7 @@ class scrollSelection : AppCompatActivity() {
                             var intent = Intent(this@scrollSelection, filmVisualizer::class.java)
                             intent.putExtra("filmName", filmList[position].name)
                             intent.putExtra("filmGenre", filmList[position].genre)
-                            intent.putExtra("filmYear", filmList[position].anno)
+                            intent.putExtra("filmYear", filmList[position].anno.toString())
                             intent.putExtra("filmDescription", filmList[position].description)
                             startActivity(intent)
                             finish()

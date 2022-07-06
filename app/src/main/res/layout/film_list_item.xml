@@ -30,6 +30,7 @@
                 android:gravity="center"
                 android:textColor="@color/black"
                 android:textSize="30sp"
+                android:paddingRight="10sp"
                 android:textStyle="bold"/>
 
             <TextView
@@ -37,10 +38,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="year"
+                android:paddingLeft="10sp"
+                android:paddingBottom="7sp"
                 android:layout_gravity="bottom"
                 android:gravity="center"
                 android:textColor="@color/black"
-                android:textSize="14sp"
+                android:textSize="18sp"
                 android:textStyle="italic"/>
 
         </LinearLayout>

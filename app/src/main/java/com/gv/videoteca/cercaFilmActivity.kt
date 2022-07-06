@@ -114,8 +114,10 @@ class cercaFilmActivity : AppCompatActivity() {
     }
 
     private fun correspond(filmData: Film, t_movie: String): Boolean {
+        val t_movieL = t_movie.lowercase()
+        val nameMovie= filmData.name.lowercase()
 
-        if(t_movie in filmData.name){
+        if(t_movieL in nameMovie){
 
             if(!selectedGenre.equals("Genre")){
 
