@@ -65,23 +65,21 @@
     <Spinner
         android:id="@+id/genere"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="53dp"
         android:layout_margin="10dp"
         android:background="@drawable/shapeemail"
         android:padding="15dp"
-        android:minHeight="48sp"
-        tools:ignore="SpeakableTextPresentCheck" />
+        android:textColor="@android:color/white" />
 
     <Spinner
         android:id="@+id/anno"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="53sp"
         android:layout_margin="10dp"
-
         android:background="@drawable/shapeemail"
         android:drawablePadding="10dp"
-        android:minHeight="48sp"
-        android:padding="15dp" />
+        android:padding="15dp"
+        android:textColor="@android:color/white"/>
 
     <Button
         android:id="@+id/search"

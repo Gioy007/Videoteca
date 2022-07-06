@@ -32,7 +32,6 @@ class filmVisualizer : AppCompatActivity() {
     private var id = ""
     val loanData = Loan("tizio","caio")
     override fun onCreate(savedInstanceState: Bundle?) {
-        println("ciao")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_film_visualizer)
         val back = findViewById(R.id.back) as Button
