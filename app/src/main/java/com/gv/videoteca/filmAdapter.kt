@@ -28,7 +28,7 @@ class filmAdapter(private val filmList : ArrayList<Film>) : RecyclerView.Adapter
     override fun onBindViewHolder(holder: filmAdapter.ViewHolder, position: Int) {
         val currentFilm = filmList[position]
         holder.tvName.text=currentFilm.name
-        holder.tvYear.text= currentFilm.anno.toString()
+        holder.tvYear.text= "("+currentFilm.anno.toString()+")"
     }
 
     class ViewHolder(itemView : View, clickListener: onItemClickListener) : RecyclerView.ViewHolder(itemView) {

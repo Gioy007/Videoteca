@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center"
         android:padding="16dp"
         android:layout_gravity="center"
@@ -17,7 +17,7 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -29,7 +29,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:textColor="@color/black"
-                android:textSize="30sp"
+                android:textSize="22sp"
                 android:paddingRight="10sp"
                 android:textStyle="bold"/>
 
@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:text="year"
                 android:paddingLeft="10sp"
-                android:paddingBottom="7sp"
+                android:paddingBottom="3sp"
                 android:layout_gravity="bottom"
                 android:gravity="center"
                 android:textColor="@color/black"
